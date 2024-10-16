@@ -17,7 +17,7 @@ jobs:
         run: sfdx force:apex:test:run --result-format human --code-coverage --output-dir test-result --wait 10
 
       - name: Test Coverage Report
-        run: sfdx force:apex:test:report --codecoverage --outputdir test-result
+        run: sfdx force:apex:test:report --code-coverage --output-dir test-result
 
   deploy:
     needs: test
