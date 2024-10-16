@@ -18,7 +18,7 @@ jobs:
         run: |
           sfdx force:apex:test:run --result-format human --code-coverage --output-dir test-result --wait 10 --json > test-run-result.json
           cat test-run-result.json
-          TEST_RUN_ID=$(jq -r '.result.testRunId' test-run-result.json)
+          TEST_RUN_ID=$(jq -r '.result.summary.testRunId' test-run-result.json)
           echo "TestRunId: $TEST_RUN_ID"
           echo $TEST_RUN_ID > test-run-id.txt
 
