@@ -14,10 +14,19 @@ jobs:
         run: echo "${{ secrets.SF_AUTH_URL }}" > sfdx_auth_url.txt && sfdx auth:sfdxurl:store --sfdxurlfile sfdx_auth_url.txt --setalias MyDevOrg --setdefaultusername
 
       - name: Run Apex tests (Synchronous)
-        run: sfdx force:apex:test:run --result-format human --code-coverage --output-dir test-result --wait 10
+        # Capture the TestRunId and store it in a file
+        run: |
+          sfdx force:apex:test:run --result-format human --code-coverage --output-dir test-result --wait 10 --json > test-run-result.json
+          cat test-run-result.json
+          TEST_RUN_ID=$(jq -r '.result.testRunId' test-run-result.json)
+          echo "TestRunId: $TEST_RUN_ID"
+          echo $TEST_RUN_ID > test-run-id.txt
 
       - name: Test Coverage Report
-        run: sfdx force:apex:test:report --code-coverage --output-dir test-result
+        # Use the captured TestRunId to retrieve the coverage report
+        run: |
+          TEST_RUN_ID=$(cat test-run-id.txt)
+          sfdx force:apex:test:report --code-coverage --output-dir test-result --test-run-id $TEST_RUN_ID
 
   deploy:
     needs: test
