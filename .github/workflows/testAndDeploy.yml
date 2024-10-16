@@ -13,8 +13,8 @@ jobs:
       - name: Authenticate to Salesforce using Auth URL
         run: echo "${{ secrets.SF_AUTH_URL }}" > sfdx_auth_url.txt && sfdx auth:sfdxurl:store --sfdxurlfile sfdx_auth_url.txt --setalias MyDevOrg --setdefaultusername
 
-      - name: Run Apex tests
-        run: sfdx force:apex:test:run --resultformat human --codecoverage --outputdir test-result
+      - name: Run Apex tests (Synchronous)
+        run: sfdx force:apex:test:run --result-format human --code-coverage --output-dir test-result --wait 10
 
       - name: Test Coverage Report
         run: sfdx force:apex:test:report --codecoverage --outputdir test-result
