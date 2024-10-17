@@ -54,7 +54,7 @@ jobs:
         run: cat pmd-report.txt
 
   test:
-    needs: [code-formatting, code-analysis]
+    needs: [code-formatting]
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
