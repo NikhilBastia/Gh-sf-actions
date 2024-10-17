@@ -69,7 +69,9 @@ jobs:
       - name: Run Apex tests (Synchronous)
         # Capture the TestRunId and store it in a file
         run: |
-          sfdx force:apex:test:run --result-format human --code-coverage --output-dir test-result --wait 10 --json > test-run-result.json
+          # List of test classes to run
+          TEST_CLASSES="MyCustomClassTest"
+          sfdx force:apex:test:run -n $TEST_CLASSES --result-format human --code-coverage --output-dir test-result --wait 10 --json > test-run-result.json
           cat test-run-result.json
           TEST_RUN_ID=$(jq -r '.result.summary.testRunId' test-run-result.json)
           echo "TestRunId: $TEST_RUN_ID"
