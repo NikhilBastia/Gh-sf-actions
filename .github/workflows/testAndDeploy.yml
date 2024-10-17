@@ -1,6 +1,22 @@
 name: Salesforce Project
 on: push
 jobs:
+  # First job: Check code formatting using Apex Prettier
+  code-formatting:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Install Salesforce CLI and Apex Prettier
+        run: |
+          npm install @salesforce/cli --global
+          npm install -g prettier-plugin-apex
+
+      - name: Run Prettier to check code format
+        run: |
+          prettier --check "src/**/*.cls"
+
   test:
     runs-on: ubuntu-latest
     steps:
