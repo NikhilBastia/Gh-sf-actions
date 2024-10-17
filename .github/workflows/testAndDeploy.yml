@@ -8,9 +8,10 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Install Salesforce CLI and Apex Prettier
+      - name: Install Salesforce CLI, Prettier and Apex Prettier
         run: |
-          npm install @salesforce/cli --global
+          npm install @salesforce/cli --global 
+          npm install -g prettier 
           npm install -g prettier-plugin-apex
 
       - name: Run Prettier to check code format
@@ -18,6 +19,7 @@ jobs:
           prettier --check "src/**/*.cls"
 
   test:
+    needs: code-formatting
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
