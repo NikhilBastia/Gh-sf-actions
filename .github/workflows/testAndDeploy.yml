@@ -1,5 +1,9 @@
 name: Salesforce Project
-on: push
+on:
+  push:
+    branches:
+      - "feature/*"
+
 jobs:
   # First job: Check code formatting using Apex Prettier
   code-formatting:
