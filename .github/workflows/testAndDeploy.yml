@@ -2,7 +2,8 @@ name: Salesforce Project
 on:
   push:
     branches:
-      - "feature/*"
+      - "*"
+      - "!master"
 
 jobs:
   # First job: Check code formatting using Apex Prettier
