@@ -12,7 +12,7 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Install Salesforce CLI, Prettier and Apex Prettier
+      - name: Install Salesforce CLI, Prettier and Apex Prettier plugin
         run: |
           npm install @salesforce/cli --global 
           npm install -g prettier 
