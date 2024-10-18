@@ -24,34 +24,21 @@ jobs:
           prettier --check "src/**/*.cls"
 
   # Second job: Run Apex PMD (Source Code Analysis)
+
   code-analysis:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Install Salesforce CLI and PMD
+      - name: Install Salesforce CLI
         run: |
           npm install @salesforce/cli --global
 
-          # Download and install PMD
-          wget https://github.com/pmd/pmd/releases/download/pmd_releases%2F6.38.0/pmd-bin-6.38.0.zip
-          unzip pmd-bin-6.38.0.zip
-
-          # Add PMD to the PATH
-          export PATH=$PATH:$(pwd)/pmd-bin-6.38.0/bin
-
-      - name: Run Apex PMD
-        run: |
-          # Ensure that PMD is accessible
-          echo "PMD version:"
-          pmd -version
-
-          # Run PMD analysis on Apex files
-          pmd -d ./src -R category/apex/design.xml -f text -r pmd-report.txt
-
-      - name: Display PMD Report
-        run: cat pmd-report.txt
+      - name: Install PMD
+        uses: pmd/pmd-github-action@v2
+        with:
+          rulesets: "ruleset.xml"
 
   test:
     needs: [code-formatting]
