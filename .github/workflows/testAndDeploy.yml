@@ -43,7 +43,7 @@ jobs:
           analyzeModifiedFilesOnly: false
       - name: Upload PMD results
         uses: actions/upload-artifact@v4
-        if: failure()
+        if: always()
         with:
           name: pmd-results
           path: pmd-report.txt
