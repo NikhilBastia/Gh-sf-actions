@@ -42,7 +42,7 @@ jobs:
           sourcePath: "src/classes"
           analyzeModifiedFilesOnly: false
       - name: Upload PMD results
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v4
         if: failure()
         with:
           name: pmd-results
