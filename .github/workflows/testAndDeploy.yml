@@ -38,7 +38,7 @@ jobs:
       - name: Run PMD
         uses: pmd/pmd-github-action@v1
         with:
-          rulesets: "rulesets/apex/ruleset.xml"
+          rulesets: "ruleset.xml"
           sourcePath: "src/classes"
           analyzeModifiedFilesOnly: false
       - name: Upload PMD results
