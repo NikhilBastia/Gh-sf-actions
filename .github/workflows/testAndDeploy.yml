@@ -1,6 +1,8 @@
 name: Salesforce Project
 on:
-  workflow_dispatch:
+ push:
+    branches:
+      - "release"
 
 jobs:
   deploy:
