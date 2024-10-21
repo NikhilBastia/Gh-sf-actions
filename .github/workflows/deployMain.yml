@@ -1,7 +1,7 @@
 name: Deploy Main branch project
 
 on:
-  workflow_dispatch:
+  workflow_dispatch
 
 jobs:
   deploy:
