@@ -49,7 +49,7 @@ jobs:
           path: pmd-report.txt
 
   test:
-    needs: [code-formatting]
+    needs: [code-formatting, code-analysis]
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
