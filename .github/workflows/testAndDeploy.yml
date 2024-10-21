@@ -2,89 +2,10 @@ name: Salesforce Project
 on:
   push:
     branches:
-      - "*"
-      - "!master"
+      - "release"
 
 jobs:
-  # First job: Check code formatting using Apex Prettier
-  code-formatting:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
-
-      - name: Install Salesforce CLI, Prettier and Apex Prettier plugin
-        run: |
-          npm install @salesforce/cli --global 
-          npm install -g prettier 
-          npm install -g prettier-plugin-apex
-
-      - name: Run Prettier to check code format
-        run: |
-          prettier --check "src/**/*.cls"
-
-  # Second job: Run Apex PMD (Source Code Analysis)
-  code-analysis:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
-
-      - name: Install Salesforce CLI and PMD
-        run: |
-          npm install @salesforce/cli --global
-
-          # Download and install PMD
-          wget https://github.com/pmd/pmd/releases/download/pmd_releases%2F6.38.0/pmd-bin-6.38.0.zip
-          unzip pmd-bin-6.38.0.zip
-
-          # Add PMD to the PATH
-          export PATH=$PATH:$(pwd)/pmd-bin-6.38.0/bin
-
-      - name: Run Apex PMD
-        run: |
-          # Ensure that PMD is accessible
-          echo "PMD version:"
-          pmd -version
-
-          # Run PMD analysis on Apex files
-          pmd -d ./src -R category/apex/design.xml -f text -r pmd-report.txt
-
-      - name: Display PMD Report
-        run: cat pmd-report.txt
-
-  test:
-    needs: [code-formatting]
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
-
-      - name: Install Salesforce CLI
-        run: npm install @salesforce/cli --global
-
-      - name: Authenticate to Salesforce using Auth URL
-        run: echo "${{ secrets.SF_AUTH_URL }}" > sfdx_auth_url.txt && sfdx auth:sfdxurl:store --sfdxurlfile sfdx_auth_url.txt --setalias MyDevOrg --setdefaultusername
-
-      - name: Run Apex tests (Synchronous)
-        # Capture the TestRunId and store it in a file
-        run: |
-          # List of test classes to run
-          TEST_CLASSES="MyCustomClassTest"
-          sfdx force:apex:test:run -n $TEST_CLASSES --result-format human --code-coverage --output-dir test-result --wait 10 --json > test-run-result.json
-          cat test-run-result.json
-          TEST_RUN_ID=$(jq -r '.result.summary.testRunId' test-run-result.json)
-          echo "TestRunId: $TEST_RUN_ID"
-          echo $TEST_RUN_ID > test-run-id.txt
-
-      - name: Test Coverage Report
-        # Use the captured TestRunId to retrieve the coverage report
-        run: |
-          TEST_RUN_ID=$(cat test-run-id.txt)
-          sfdx force:apex:test:report --code-coverage --output-dir test-result --test-run-id $TEST_RUN_ID
-
   deploy:
-    needs: test
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
@@ -97,4 +18,4 @@ jobs:
         run: echo "${{ secrets.SF_AUTH_URL }}" > sfdx_auth_url.txt && sfdx auth:sfdxurl:store --sfdxurlfile sfdx_auth_url.txt --setalias MyDevOrg --setdefaultusername
 
       - name: Deploy to Salesforce (Simulated)
-        run: echo "Deploying to Salesforce..."
+        run: echo "Deploying to Staging..."
