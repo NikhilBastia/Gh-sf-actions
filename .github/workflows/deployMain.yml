@@ -1,14 +1,12 @@
 name: Deploy Main branch project
 
 on:
-  push:
-    branches:
-      - "master"
+  workflow_dispatch:
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
-    if: github.ref == 'refs/heads/master'
+    if: github.ref == 'refs/heads/release'
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -20,4 +18,4 @@ jobs:
         run: echo "${{ secrets.SF_AUTH_URL }}" > sfdx_auth_url.txt && sfdx auth:sfdxurl:store --sfdxurlfile sfdx_auth_url.txt --setalias MyDevOrg --setdefaultusername
 
       - name: Deploy to Salesforce (Simulated)
-        run: echo "Deploying to Salesforce..."
+        run: echo "Deploying to packaging env..."
