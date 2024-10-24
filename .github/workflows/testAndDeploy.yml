@@ -37,7 +37,7 @@ jobs:
 
       - name: Check for Source Files
         run: |
-          if [ -z "$( ls -A '/src/classes' )" ]; then
+          if [ -z "$( ls -A './src/classes' )" ]; then
             echo "No files found in the path"
             exit 1  
           else
