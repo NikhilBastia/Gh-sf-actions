@@ -34,6 +34,17 @@ jobs:
         with:
           java-version: "11"
           distribution: "adopt"
+
+      - name: Check for Source Files
+        run: |
+          # Check if any .cls files exist in the source path
+          if [ -f  ./src/classes/*.cls') ] then
+            echo "No files found in the path"
+            exit 1  
+          else
+            echo "Found files, proceeding with PMD analysis"
+          fi
+          
       - name: Run PMD
         uses: pmd/pmd-github-action@v1
         with:
