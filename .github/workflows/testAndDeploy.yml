@@ -37,8 +37,7 @@ jobs:
 
       - name: Check for Source Files
         run: |
-          # Check if any .cls files exist in the source path
-          if ! [ -f  ./src/classes/*.cls ] then
+          if ! [ -f /src/classes/*.cls ]; then
             echo "No files found in the path"
             exit 1  
           else
