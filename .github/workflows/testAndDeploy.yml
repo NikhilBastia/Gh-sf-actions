@@ -91,5 +91,10 @@ jobs:
       - name: Authenticate to Salesforce using Auth URL
         run: echo "${{ secrets.SF_AUTH_URL }}" > sfdx_auth_url.txt && sfdx auth:sfdxurl:store --sfdxurlfile sfdx_auth_url.txt --setalias MyDevOrg --setdefaultusername
 
-      - name: Deploy to Salesforce (Simulated)
-        run: echo "Deploying to Salesforce..."
+      - name: Deploy to Salesforce
+        run: |
+          # Deploy source to Salesforce org
+          sf project deploy start --target-org MyDevOrg --wait 10 --verbose --test-level RunLocalTests
+          
+      - name: Check Deployment Status
+        run: sf project deploy report --target-org MyDevOrg
