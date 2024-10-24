@@ -96,5 +96,4 @@ jobs:
           # Deploy source to Salesforce org
           sf project deploy start --target-org MyDevOrg --wait 10 --verbose --test-level NoTestRun
           
-      - name: Check Deployment Status
-        run: sf project deploy report --target-org MyDevOrg
+     
